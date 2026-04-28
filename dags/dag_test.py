@@ -1,4 +1,5 @@
 from airflow import DAG
+from airflow.models.param import Param
 from providers.stratio.rocket.operators.rocket_operator import RocketOperator
 from datetime import datetime
 
@@ -24,11 +25,14 @@ def run_rocket_operator(wf_title, wf_name, wf_path, wf_size):
 
 with DAG(
     'dag_test',
-    schedule_interval=None,
+    schedule_interval="0 2 * * 1",
     start_date=datetime(2026, 1, 1),
     catchup=False,
     tags=["stratio"],
     max_active_tasks=1,
+    params={
+        "modelar": Param("false", type="string"),
+    },
 ) as dag:
 
     # Etapa 1
